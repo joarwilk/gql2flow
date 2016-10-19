@@ -2,8 +2,8 @@
 
 *A fork of [gql2ts](https://github.com/avantcredit/gql2ts)*
 
-=====
 
+## Usage
 ```shell
 npm install -g gql2flow
 ```
@@ -20,7 +20,7 @@ Options:
   -i --ignored-types <ignoredTypes>  names of types to ignore (comma delimited)
 ```
 
-### Examples
+## Examples
 
 #### With Default Options
 ```shell
