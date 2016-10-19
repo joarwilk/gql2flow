@@ -3,7 +3,6 @@
 *A fork of [gql2ts](https://github.com/avantcredit/gql2ts)*
 
 
-## Usage
 ```shell
 yarn global add gql2flow (recommended)
 npm i -g gql2flow (legacy)
