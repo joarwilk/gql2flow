@@ -1,0 +1,44 @@
+{
+  "name": "gql2flow",
+  "version": "0.1.0",
+  "description": "Convert GraphQL Schema to TypeScript defs",
+  "main": "index.js",
+  "dependencies": {
+    "commander": "^2.9.0"
+  },
+  "devDependencies": {
+    "@types/graphql": "^0.7.1",
+    "@types/node": "^6.0.45",
+    "chai": "^3.5.0",
+    "graphql": "^0.7.2",
+    "mocha": "^2.4.5"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "typescript",
+    "graphql"
+  ],
+  "files": [
+    "index.js",
+    "util"
+  ],
+  "author": "Joar Wilk <joar.wilk@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joarwilk/gql2flow.git"
+  },
+  "bin": {
+    "gql2flow": "./index.js"
+  },
+  "engines": {
+    "node": ">=4.0.0"
+  },
+  "perferGlobal": true,
+  "bugs": {
+    "url": "https://github.com/joarwilk/gql2flow/issues"
+  },
+  "homepage": "https://github.com/joarwilk/gql2flow#readme",
+}
