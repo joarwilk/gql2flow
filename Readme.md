@@ -5,9 +5,8 @@
 
 ## Usage
 ```shell
-yarn global add gql2flow (preferred)
-or
-npm i -g gql2flow
+yarn global add gql2flow (recommended)
+npm i -g gql2flow (legacy)
 ```
 
 
