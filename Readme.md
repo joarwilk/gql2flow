@@ -16,7 +16,7 @@ Options:
 
   -h, --help                         output usage information
   -V, --version                      output the version number
-  -o --output-file [outputFile]      name for ouput file, defaults to graphqlInterfaces.d.ts
+  -o --output-file [outputFile]      name for output file, defaults to graphql-export.flow.js
   -i --ignored-types <ignoredTypes>  names of types to ignore (comma delimited)
 ```
 
@@ -30,5 +30,5 @@ gql2flow schema.json
 
 #### With Optional Options
 ```shell
-gql2flow -i BadInterface,BadType,BadUnion -o avant-gql.d.ts schema.json
+gql2flow -i BadInterface,BadType,BadUnion -o schema.flow.js schema.json
 ```

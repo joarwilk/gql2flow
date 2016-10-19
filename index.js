@@ -14,7 +14,7 @@ const moduleUtils = require('./util/module')
 program
   .version('0.2.1')
   .usage('[options] <schema.json>')
-  .option('-o --output-file [outputFile]', 'name for ouput file, defaults to graphqlInterfaces.d.ts', 'graphqlInterfaces.d.ts')
+  .option('-o --output-file [outputFile]', 'name for ouput file, defaults to graphql-export.flow.js', 'graphql-export.flow.js')
   .option('-m --module-name [moduleName]', 'name for the export module, defaults to "GQL"', 'GQL')
   .option('-i --ignored-types <ignoredTypes>', 'names of types to ignore (comma delimited)', v => v.split(','), [])
   .action((fileName, options) => {
