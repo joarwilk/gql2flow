@@ -1,6 +1,8 @@
 # GQL2FLOW
 
-### *A fork of [gql2ts](https://github.com/avantcredit/gql2ts)*
+*A fork of [gql2ts](https://github.com/avantcredit/gql2ts)*
+
+=====
 
 ```shell
 npm install -g gql2flow
