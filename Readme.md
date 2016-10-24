@@ -1,4 +1,4 @@
-# GQL2FLOW
+# GraphQL To Flow Types
 
 *A fork of [gql2ts](https://github.com/avantcredit/gql2ts)*
 
