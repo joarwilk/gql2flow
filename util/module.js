@@ -3,7 +3,7 @@
 const fileIO = require('./fileIO');
 
 const generateModule = (moduleName, interfaces) => {
-  return `// graphql typescript definitions
+  return `// graphql flow definitions
 ${interfaces}
 `
 };
