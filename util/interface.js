@@ -41,10 +41,9 @@ type ${name} = ${possibleTypes};`;
 
 const typeNameDeclaration = '__typename: string;\n'
 
-const generateInterfaceDeclaration = (description, declaration, fields, additionalInfo, isInput) => `${additionalInfo}${description && `/*
+const generateInterfaceDeclaration = (description, declaration, fields, additionalInfo, isInput) => `${additionalInfo}${description ? `/*
   description: ${description}
-*/`}
-type ${declaration} = {
+*/\n` : ''}type ${declaration} = {
   ${isInput ? '' : typeNameDeclaration}${fields}
 }`;
 
