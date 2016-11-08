@@ -16,18 +16,18 @@ const generateRootDataName = schema => {
   return rootNamespaces.join(' | ');
 }
 
-const generateRootTypes = schema => `type GraphQLResponseRoot = {
+const generateRootTypes = schema => `export type GraphQLResponseRoot = {
   data?: ${generateRootDataName(schema)};
   errors?: Array<GraphQLResponseError>;
 }
 
-type GraphQLResponseError = {
+export type GraphQLResponseError = {
   message: string;            // Required for all errors
   locations?: Array<GraphQLResponseErrorLocation>;
   [propName: string]: any;    // 7.2.2 says 'GraphQL servers may provide additional entries to error'
 }
 
-type GraphQLResponseErrorLocation = {
+export type GraphQLResponseErrorLocation = {
   line: number;
   column: number;
 }`
@@ -37,13 +37,13 @@ const generateTypeName = name => `${name}`;
 const generateTypeDeclaration = (description, name, possibleTypes) => `${description && `/*
   description: ${description}
 */`}
-type ${name} = ${possibleTypes};`;
+export type ${name} = ${possibleTypes};`;
 
 const typeNameDeclaration = '__typename: string;\n'
 
 const generateInterfaceDeclaration = (description, declaration, fields, additionalInfo, isInput) => `${additionalInfo}${description ? `/*
   description: ${description}
-*/\n` : ''}type ${declaration} = {
+*/\n` : ''}export type ${declaration} = {
   ${isInput ? '' : typeNameDeclaration}${fields}
 }`;
 
@@ -52,7 +52,7 @@ const generateEnumName = name => `${name}Enum`;
 const generateEnumDeclaration = (description, name, enumValues) => `${description && `/*
 description: ${description}
 */`}
-type ${generateEnumName(name)} = ${enumValues.join(' | ')};`;
+export type ${generateEnumName(name)} = ${enumValues.join(' | ')};`;
 
 /**
   * TODO
