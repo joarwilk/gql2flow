@@ -102,8 +102,10 @@ const fieldToDefinition = (field, isInput) => {
   } else {
     fieldDef = `${field.name}: ${interfaceName}`;
   }
+  
+  const description = field.description !== null ? `/* ${field.description} */\n` : ``
 
-  return `  ${fieldDef};`;
+  return `${description}  ${fieldDef};`;
 }
 
 const findRootType = type => {
