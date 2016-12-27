@@ -12,7 +12,7 @@ const interfaceUtils = require('./util/interface');
 const moduleUtils = require('./util/module')
 
 program
-  .version('0.2.1')
+  .version('0.3.0')
   .usage('[options] <schema.json>')
   .option('-o --output-file [outputFile]', 'name for ouput file, defaults to graphql-export.flow.js', 'graphql-export.flow.js')
   .option('-m --module-name [moduleName]', 'name for the export module, defaults to "GQL"', 'GQL')

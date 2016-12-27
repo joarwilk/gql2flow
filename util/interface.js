@@ -34,14 +34,14 @@ export type GraphQLResponseErrorLocation = {
 
 const generateTypeName = name => `${name}`;
 
-const generateTypeDeclaration = (description, name, possibleTypes) => `${description && `/*
+const generateTypeDeclaration = (description, name, possibleTypes) => `${description && `/**
   description: ${description}
 */`}
 export type ${name} = ${possibleTypes};`;
 
 const typeNameDeclaration = '__typename: string;\n'
 
-const generateInterfaceDeclaration = (description, declaration, fields, additionalInfo, isInput) => `${additionalInfo}${description ? `/*
+const generateInterfaceDeclaration = (description, declaration, fields, additionalInfo, isInput) => `${additionalInfo}${description ? `/**
   description: ${description}
 */\n` : ''}export type ${declaration} = {
   ${isInput ? '' : typeNameDeclaration}${fields}
@@ -49,7 +49,7 @@ const generateInterfaceDeclaration = (description, declaration, fields, addition
 
 const generateEnumName = name => `${name}Enum`;
 
-const generateEnumDeclaration = (description, name, enumValues) => `${description && `/*
+const generateEnumDeclaration = (description, name, enumValues) => `${description && `/**
 description: ${description}
 */`}
 export type ${generateEnumName(name)} = ${enumValues.join(' | ')};`;
@@ -102,9 +102,9 @@ const fieldToDefinition = (field, isInput) => {
   } else {
     fieldDef = `${field.name}: ${interfaceName}`;
   }
-  
-  const description = field.description !== null ? `/* ${field.description} */\n` : ``
 
+  const description = field.description !== null ? `  /** ${field.description} */\n` : ``
+  
   return `${description}  ${fieldDef};`;
 }
 
