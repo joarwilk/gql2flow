@@ -47,12 +47,10 @@ const generateInterfaceDeclaration = (description, declaration, fields, addition
   ${isInput ? '' : typeNameDeclaration}${fields}
 }`;
 
-const generateEnumName = name => `${name}Enum`;
-
 const generateEnumDeclaration = (description, name, enumValues) => `${description && `/**
 description: ${description}
 */`}
-export type ${generateEnumName(name)} = ${enumValues.join(' | ')};`;
+export type ${name} = ${enumValues.join(' | ')};`;
 
 /**
   * TODO
@@ -86,7 +84,7 @@ const resolveInterfaceName = type => {
     return generateTypeName(type.name);
 
   case 'ENUM':
-    return generateEnumName(type.name);
+    return type.name;
 
   default:
     return generateTypeName(type.name);
