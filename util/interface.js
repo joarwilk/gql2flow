@@ -98,13 +98,13 @@ const fieldToDefinition = (field, isInput) => {
   let fieldDef;
   let isNotNull = field.type.kind === 'NON_NULL'
   if (!isNotNull) {
-    fieldDef = `${field.name}?: ${interfaceName}`;
+    fieldDef = `${field.name}: ?${interfaceName}`;
   } else {
     fieldDef = `${field.name}: ${interfaceName}`;
   }
 
   const description = field.description !== null ? `  /** ${field.description} */\n` : ``
-  
+
   return `${description}  ${fieldDef};`;
 }
 
