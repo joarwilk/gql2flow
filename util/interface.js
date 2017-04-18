@@ -104,7 +104,7 @@ const fieldToDefinition = (field, isInput) => {
     fieldDef = `${field.name}: ${interfaceName}`;
   }
 
-  const description = field.description !== null ? `  /** ${field.description} */\n` : ``
+  const description = field.description ? `  /** ${field.description} */\n` : ``
 
   return `${description}  ${fieldDef};`;
 }
