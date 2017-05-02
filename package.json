@@ -1,6 +1,6 @@
 {
   "name": "gql2flow",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Convert a GraphQL Schema to a Flowtype definition",
   "main": "index.js",
   "dependencies": {
