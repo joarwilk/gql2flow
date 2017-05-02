@@ -22,13 +22,12 @@ Options:
 
 ## Examples
 
-#### With Default Options
+#### Fetching from a server
 ```shell
-gql2flow schema.json
+gql2flow https://api.github.com/graphql
 ```
 
-
-#### With Optional Options
+#### From a json schema
 ```shell
-gql2flow -i BadInterface,BadType,BadUnion -o schema.flow.js schema.json
+gql2flow schema.json
 ```
