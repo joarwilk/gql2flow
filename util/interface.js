@@ -136,7 +136,7 @@ ${isInput ? '' : fields}
       return generateEnumDeclaration(
         type.description,
         type.name,
-        type.enumValues.map(v => `${v.name}`)
+        type.enumValues.map(v => `"${v.name}"`)
       );
     }
 
