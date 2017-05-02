@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 'use strict';
+const isUrl = require('is-url');
+
 const program = require('commander');
 
 // file I/O helpers
@@ -10,6 +12,9 @@ const interfaceUtils = require('./util/interface');
 
 // Module Utils
 const moduleUtils = require('./util/module');
+
+// Fetch utils
+const fetchUtils = require('./util/fetcher');
 
 program
   .version('0.3.0')
@@ -38,14 +43,34 @@ program
     v => v.split(','),
     []
   )
-  .action((fileName, options) => {
-    let schema = fileIO.readFile(fileName);
+  .action((path, options) => {
+    const getSchema = new Promise((resolve, reject) => {
+      if (isUrl(path)) {
+        fetchUtils.fetchWithIntrospection(path, (err, schema) => {
+          if (err) {
+            reject(err);
+          } else if (!schema.data) {
+            reject(
+              new Error('Server replied with an invalid introspection schema')
+            );
+          } else {
+            resolve(schema);
+          }
+        });
+      } else {
+        resolve(fileIO.readFile(path));
+      }
+    });
 
-    let interfaces = interfaceUtils.generateTypes(schema, options);
+    getSchema
+      .then(schema => {
+        let interfaces = interfaceUtils.generateTypes(schema, options);
 
-    let module = moduleUtils.generateModule(options.moduleName, interfaces);
+        let module = moduleUtils.generateModule(options.moduleName, interfaces);
 
-    moduleUtils.writeModuleToFile(options.outputFile, module);
+        moduleUtils.writeModuleToFile(options.outputFile, module);
+      })
+      .catch(err => console.error(err.message));
   })
   .parse(process.argv);
 
