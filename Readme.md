@@ -1,8 +1,7 @@
 # GraphQL To Flow Types
 
 ```shell
-yarn global add gql2flow (recommended)
-npm i -g gql2flow (legacy)
+npm i -g gql2flow
 ```
 
 
