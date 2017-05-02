@@ -34,10 +34,13 @@ export type GraphQLResponseErrorLocation = {
 
 const generateTypeName = name => `${name}`;
 
-const generateTypeDeclaration = (description, name, possibleTypes) => `${description && `/**
-  description: ${description}
-*/`}
-export type ${name} = ${possibleTypes};`;
+const generateTypeDeclaration = (description, name, possibleTypes) => {
+  const descriptionComment = description ? `/**
+    description: ${description}
+  */` : '';
+
+  return generateTypeDeclaration + `\nexport type ${name} = ${possibleTypes};`;
+};
 
 const typeNameDeclaration = '__typename: string;\n'
 
@@ -101,7 +104,7 @@ const fieldToDefinition = (field, isInput) => {
     fieldDef = `${field.name}: ${interfaceName}`;
   }
 
-  const description = field.description !== null ? `  /** ${field.description} */\n` : ``
+  const description = field.description ? `  /** ${field.description} */\n` : ``
 
   return `${description}  ${fieldDef};`;
 }
