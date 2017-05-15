@@ -17,7 +17,7 @@ const moduleUtils = require('./util/module');
 const fetchUtils = require('./util/fetcher');
 
 program
-  .version('0.3.0')
+  .version('0.4.3')
   .usage('[options] <schema.json>')
   .option(
     '-o --output-file [outputFile]',
@@ -30,6 +30,19 @@ program
     '-m --module-name [moduleName]',
     'name for the export module. Types are not wrapped in a module if this is not set',
     ''
+  )
+  .option(
+    '-t --typeMap <typeSpec>',
+    'Define custom scalar types where typeSpec is <graphql type>:<flow type>',
+    (val, typeMap) => {
+      const [graphqlType, flowType] = val.split(':');
+      if (! graphqlType || ! flowType) {
+        throw new Error('-t argument format should be <graphql type>:<flow type>');
+      }
+      typeMap[graphqlType] = flowType;
+      return typeMap;
+    },
+    {}
   )
   .option(
     '-i --ignored-types <ignoredTypes>',
