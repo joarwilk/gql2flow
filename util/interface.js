@@ -49,11 +49,10 @@ const generateTypes = (schema, options) => {
     description,
     declaration,
     fields,
-    additionalInfo,
-    isInput
+    additionalInfo
   ) =>
     `${additionalInfo}${generateDescription(description)}${exportOrDeclare} type ${declaration} = {
-${isInput ? '' : fields}
+${fields}
 }`;
 
   const generateEnumDeclaration = (description, name, enumValues) =>
@@ -98,7 +97,7 @@ ${isInput ? '' : fields}
     }
   };
 
-  const fieldToDefinition = (field, isInput) => {
+  const fieldToDefinition = (field) => {
     let interfaceName = resolveInterfaceName(field.type);
     let isNotNull = field.type.kind === 'NON_NULL';
 
@@ -145,7 +144,7 @@ ${isInput ? '' : fields}
 
     let fields = f
       .filter(field => filterField(field, ignoredTypes))
-      .map(field => fieldToDefinition(field, isInput))
+      .map(field => fieldToDefinition(field))
       .filter(field => field)
       .join('\n');
 
@@ -170,8 +169,7 @@ ${isInput ? '' : fields}
       type.description,
       interfaceDeclaration,
       fields,
-      additionalInfo,
-      isInput
+      additionalInfo
     );
   };
 
