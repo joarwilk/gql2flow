@@ -20,6 +20,10 @@ program
   .version('0.3.0')
   .usage('[options] <schema.json>')
   .option(
+    '-e --export',
+    'use export rather than declare to define types'
+  )
+  .option(
     '-o --output-file [outputFile]',
     'name for ouput file, defaults to graphql-export.flow.js',
     'graphql-export.flow.js'

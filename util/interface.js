@@ -2,7 +2,7 @@
 require('./polyfill');
 
 const generateTypes = (schema, options) => {
-  const exportOrDeclare = options.moduleName ? 'export' : 'declare';
+  const exportOrDeclare = (options.export || options.moduleName) ? 'export' : 'declare';
 
   const generateRootDataName = schema => {
     let rootNamespaces = [];
