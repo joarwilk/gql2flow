@@ -84,7 +84,7 @@ ${isInput ? '' : fields}
             return 'number';
 
           default:
-            return 'any';
+            return options.typeMap[type.name] || 'any';
         }
 
       case 'INTERFACE':
