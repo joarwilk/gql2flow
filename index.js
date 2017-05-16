@@ -17,48 +17,47 @@ const moduleUtils = require('./util/module');
 const fetchUtils = require('./util/fetcher');
 
 program
-  .version('0.4.3')
+  .version('0.4.4')
   .usage('[options] <schema.json>')
-  .option(
-    '-e --export',
-    'use export rather than declare to define types'
-  )
+  .option('-e --export', 'use export rather than declare to define types')
   .option(
     '-o --output-file [outputFile]',
     'name for ouput file, defaults to graphql-export.flow.js',
-    'graphql-export.flow.js'
+    'graphql-export.flow.js',
   )
   .option('--null-keys [nullKeys]', 'makes all keys nullable', false)
   .option('--null-values [nullValues]', 'makes all values nullable', false)
   .option(
     '-m --module-name [moduleName]',
     'name for the export module. Types are not wrapped in a module if this is not set',
-    ''
+    '',
   )
   .option(
     '-t --typeMap <typeSpec>',
     'Define custom scalar types where typeSpec is <graphql type>:<flow type>',
     (val, typeMap) => {
       const [graphqlType, flowType] = val.split(':');
-      if (! graphqlType || ! flowType) {
-        throw new Error('-t argument format should be <graphql type>:<flow type>');
+      if (!graphqlType || !flowType) {
+        throw new Error(
+          '-t argument format should be <graphql type>:<flow type>',
+        );
       }
       typeMap[graphqlType] = flowType;
       return typeMap;
     },
-    {}
+    {},
   )
   .option(
     '-i --ignored-types <ignoredTypes>',
     'names of types to ignore (comma delimited)',
     v => v.split(','),
-    []
+    [],
   )
   .option(
     '-w --whitelist <whitelist>',
     'names of types to whitelist (comma delimited)',
     v => v.split(','),
-    []
+    [],
   )
   .action((path, options) => {
     const getSchema = new Promise((resolve, reject) => {
@@ -68,7 +67,7 @@ program
             reject(err);
           } else if (!schema.data) {
             reject(
-              new Error('Server replied with an invalid introspection schema')
+              new Error('Server replied with an invalid introspection schema'),
             );
           } else {
             resolve(schema);
