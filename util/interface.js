@@ -2,7 +2,7 @@
 require('./polyfill');
 
 const generateTypes = (schema, options) => {
-  const exportOrDeclare = options.moduleName ? 'export' : 'declare';
+  const exportOrDeclare = (options.export || options.moduleName) ? 'export' : 'declare';
 
   const generateRootDataName = schema => {
     let rootNamespaces = [];
@@ -24,15 +24,15 @@ const generateTypes = (schema, options) => {
   errors?: Array<GraphQLResponseError>;
 }
 
-  ${exportOrDeclare} type GraphQLResponseError = {
+${exportOrDeclare} type GraphQLResponseError = {
   message: string;            // Required for all errors
   locations?: Array<GraphQLResponseErrorLocation>;
   [propName: string]: any;    // 7.2.2 says 'GraphQL servers may provide additional entries to error'
 }
 
-  ${exportOrDeclare} type GraphQLResponseErrorLocation = {
-    line: number;
-    column: number;
+${exportOrDeclare} type GraphQLResponseErrorLocation = {
+  line: number;
+  column: number;
 }`;
 
   const generateTypeName = name => `${name}`;
