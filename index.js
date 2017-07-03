@@ -54,6 +54,12 @@ program
     []
   )
   .option(
+    '--ignored-property-types <ignoredPropertyTypes>',
+    'property types to ignore (comma delimited)',
+    v => v.split(','),
+    []
+  )
+  .option(
     '-w --whitelist <whitelist>',
     'names of types to whitelist (comma delimited)',
     v => v.split(','),
