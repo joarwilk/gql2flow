@@ -121,7 +121,7 @@ ${fields}
     return findRootType(type.ofType);
   };
 
-  const filterField = (field, ignoredTypes) => {
+  const filterField = (field, ignoredTypes, ignoredPropertyTypes) => {
     let nestedType = findRootType(field.type);
     return !ignoredTypes.includes(nestedType.name);
   };
@@ -143,7 +143,7 @@ ${fields}
     let f = isInput ? type.inputFields : type.fields || [];
 
     let fields = f
-      .filter(field => filterField(field, ignoredTypes))
+      .filter(field => filterField(field, ignoredPropertyTypes))
       .map(field => fieldToDefinition(field))
       .filter(field => field)
       .join('\n');
@@ -191,7 +191,7 @@ ${fields}
 
         return options.whitelist.includes(type.name);
       })
-      .map(type => typeToInterface(type, options.ignoredTypes)) // convert to interface
+      .map(type => typeToInterface(type, options.ignoredTypes, options.ignoredPropertyTypes)) // convert to interface
       .filter(type => type); // remove empty ones
 
     return interfaces
