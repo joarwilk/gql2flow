@@ -2,7 +2,11 @@
 'use strict';
 const fileIO = require('./fileIO');
 
-const generateModule = (moduleName, interfaces) => {
+const generateModule = (moduleName, interfaces, typescript) => {
+  if (typescript) {
+    return interfaces;
+  }
+
   const intro = '/* @flow */\n\n';
 
   if (moduleName) {

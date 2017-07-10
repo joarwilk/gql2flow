@@ -1,8 +1,18 @@
 'use strict';
 require('./polyfill');
 
+const getDeclarator = options => {
+  if (options.typescript) {
+    return typename => `export interface ${typename}`;
+  } else if (options.export || options.moduleName) {
+    return typename => `export type ${typename} =`;
+  } else {
+    return typename => `declare type ${typename} =`;
+  }
+}
+
 const generateTypes = (schema, options) => {
-  const exportOrDeclare = (options.export || options.moduleName) ? 'export' : 'declare';
+  const declare = getDeclarator(options);
 
   const generateRootDataName = schema => {
     let rootNamespaces = [];
@@ -19,18 +29,18 @@ const generateTypes = (schema, options) => {
   };
 
   const generateRootTypes = schema =>
-    `${exportOrDeclare} type GraphQLResponseRoot = {
+    `${declare('GraphQLResponseRoot')} {
   data?: ${generateRootDataName(schema)};
-  errors?: Array<GraphQLResponseError>;
+  errors?: ${generateArray('GraphQLResponseError')};
 }
 
-${exportOrDeclare} type GraphQLResponseError = {
+${declare('GraphQLResponseError')} {
   message: string;            // Required for all errors
-  locations?: Array<GraphQLResponseErrorLocation>;
+  locations?: ${generateArray('GraphQLResponseErrorLocation')};
   [propName: string]: any;    // 7.2.2 says 'GraphQL servers may provide additional entries to error'
 }
 
-${exportOrDeclare} type GraphQLResponseErrorLocation = {
+${declare('GraphQLResponseErrorLocation')} {
   line: number;
   column: number;
 }`;
@@ -42,7 +52,7 @@ ${exportOrDeclare} type GraphQLResponseErrorLocation = {
   };
 
   const generateTypeDeclaration = (description, name, possibleTypes) => {
-    return `${generateDescription(description)}${exportOrDeclare} type ${name} = ${possibleTypes};`;
+    return `${generateDescription(description)}${declare(name)} ${possibleTypes};`;
   };
 
   const generateInterfaceDeclaration = (
@@ -51,12 +61,23 @@ ${exportOrDeclare} type GraphQLResponseErrorLocation = {
     fields,
     additionalInfo
   ) =>
-    `${additionalInfo}${generateDescription(description)}${exportOrDeclare} type ${declaration} = {
+    `${additionalInfo}${generateDescription(description)}${declare(declaration)} {
 ${fields}
 }`;
 
-  const generateEnumDeclaration = (description, name, enumValues) =>
-    `${generateDescription(description)}${exportOrDeclare} type ${name} = ${enumValues.join(' | ')};`;
+  const generateFlowEnum =(description, name, enumValues) =>
+    `${generateDescription(description)}${declare(name)} ${enumValues.join(' | ')};`;
+
+  const generateTypescriptEnum =(description, name, enumValues) => {
+    const genEnumValues = enumValues.map(value => `\n  ${value},`).join('');
+    return `${generateDescription(description)}export enum ${name} {${genEnumValues}\n}`;
+  }
+
+  const generateEnumDeclaration = options.typescript ? generateTypescriptEnum : generateFlowEnum;
+
+  const generateArray = options.typescript
+    ? typeParam => `${typeParam}[]`
+    : typeParam => `Array<${typeParam}>`;
 
   /**
     * TODO
@@ -66,7 +87,7 @@ ${fields}
   const resolveInterfaceName = type => {
     switch (type.kind) {
       case 'LIST':
-        return `Array<${resolveInterfaceName(type.ofType)}>`;
+        return generateArray(resolveInterfaceName(type.ofType));
       case 'NON_NULL':
         return `${resolveInterfaceName(type.ofType)}`;
       case 'SCALAR':
@@ -102,9 +123,11 @@ ${fields}
     let isNotNull = field.type.kind === 'NON_NULL';
 
     const nullKeyCharacter = options.nullKeys ? '?' : '';
-    const nullValueCharacter = options.nullValues || !isNotNull ? '?' : '';
+    const fullType = options.nullValues || !isNotNull
+      ? options.typescript ? `${interfaceName} | null` : `?${interfaceName}`
+      : interfaceName;
 
-    const fieldDef = `${field.name}${nullKeyCharacter}: ${nullValueCharacter}${interfaceName}`;
+    const fieldDef = `${field.name}${nullKeyCharacter}: ${fullType}`;
 
     const description = field.description
       ? `  /** ${field.description} */\n`
