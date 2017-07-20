@@ -121,9 +121,12 @@ ${fields}
   const fieldToDefinition = (field) => {
     let interfaceName = resolveInterfaceName(field.type);
     let isNotNull = field.type.kind === 'NON_NULL';
+    const nullValues = options.nullValues || !isNotNull;
 
-    const nullKeyCharacter = options.nullKeys ? '?' : '';
-    const fullType = options.nullValues || !isNotNull
+    const nullKeyCharacter = (
+      options.nullKeys || (options.typescript && nullValues)
+    ) ? '?' : '';
+    const fullType = nullValues
       ? options.typescript ? `${interfaceName} | null` : `?${interfaceName}`
       : interfaceName;
 
