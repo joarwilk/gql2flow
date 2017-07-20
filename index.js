@@ -59,7 +59,22 @@ program
     v => v.split(','),
     []
   )
+  .option(
+    '-T --typescript',
+    'generate typescript rather than flow'
+  )
   .action((path, options) => {
+    if (options.typescript) {
+      if (options.moduleName) {
+        console.warn('--module-name argument not compatible with --typescript');
+        process.exit(1);
+      }
+      if (options.export) {
+        console.warn('--export argument not compatible with --typescript');
+        process.exit(1);
+      }
+    }
+
     const getSchema = new Promise((resolve, reject) => {
       if (isUrl(path)) {
         fetchUtils.fetchWithIntrospection(path, (err, schema) => {
@@ -82,7 +97,11 @@ program
       .then(schema => {
         let interfaces = interfaceUtils.generateTypes(schema, options);
 
-        let module = moduleUtils.generateModule(options.moduleName, interfaces);
+        let module = moduleUtils.generateModule(
+          options.moduleName,
+          interfaces,
+          options.typescript
+        );
 
         moduleUtils.writeModuleToFile(options.outputFile, module);
       })
