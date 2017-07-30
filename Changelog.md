@@ -1,3 +1,6 @@
+## 0.5.0
+- Added config file support and option for unauthorised TSL CA or self-signed certs (for local development.)
+
 ## 0.2.1
 - Fix Version number in command line
 

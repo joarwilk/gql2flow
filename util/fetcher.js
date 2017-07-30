@@ -1,3 +1,4 @@
+const https = require('https')
 const fetch = require('node-fetch');
 const fs = require('fs');
 const {
@@ -6,10 +7,15 @@ const {
   printSchema,
 } = require('graphql/utilities');
 
+const agent = new https.Agent({
+  rejectUnauthorized: false
+});
+
 module.exports = {
-  fetchWithIntrospection: (url, callback) => {
+  fetchWithIntrospection: (url, config, callback) => {
     console.log('Fetching', url);
     fetch(url, {
+      agent: config.unauthorised ? agent : undefined,
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -18,7 +24,7 @@ module.exports = {
       body: JSON.stringify({ query: introspectionQuery }),
     })
       .then(res => res.json())
-      .then(schemaa => callback(null, schemaa))
+      .then(schema => callback(null, schema))
       .catch(err => callback(err));
   },
 };
