@@ -101,7 +101,7 @@ ${fields}
     let interfaceName = resolveInterfaceName(field.type);
     let isNotNull = field.type.kind === 'NON_NULL';
 
-    const nullKeyCharacter = options.nullKeys ? '?' : '';
+    const nullKeyCharacter = options.nullKeys || !isNotNull ? '?' : '';
     const nullValueCharacter = options.nullValues || !isNotNull ? '?' : '';
 
     const fieldDef = `${field.name}${nullKeyCharacter}: ${nullValueCharacter}${interfaceName}`;
