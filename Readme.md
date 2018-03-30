@@ -1,3 +1,5 @@
+## This project is deprecated, use [gql2ts](https://github.com/avantcredit/gql2ts) instead
+
 # GraphQL To Flow Types
 
 ```shell
