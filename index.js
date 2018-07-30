@@ -16,6 +16,9 @@ const moduleUtils = require('./util/module');
 // Fetch utils
 const fetchUtils = require('./util/fetcher');
 
+// Header utils
+const getHeaders = require('./util/headers');
+
 program
   .version('0.4.4')
   .usage('[options] <schema.json>')
@@ -27,6 +30,11 @@ program
   )
   .option('--null-keys [nullKeys]', 'makes all keys nullable', false)
   .option('--null-values [nullValues]', 'makes all values nullable', false)
+  .option(
+    '--headers [headers]',
+    'Headers to add to the request when fetching from a server',
+    false
+  )
   .option(
     '-m --module-name [moduleName]',
     'name for the export module. Types are not wrapped in a module if this is not set',
@@ -62,7 +70,8 @@ program
   .action((path, options) => {
     const getSchema = new Promise((resolve, reject) => {
       if (isUrl(path)) {
-        fetchUtils.fetchWithIntrospection(path, (err, schema) => {
+        const headers = getHeaders(options);
+        fetchUtils.fetchWithIntrospection(path, headers, (err, schema) => {
           if (err) {
             reject(err);
           } else if (!schema.data) {
