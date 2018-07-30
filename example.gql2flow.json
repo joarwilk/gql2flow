@@ -1,0 +1,5 @@
+{
+	"unauthorised": true,
+	"export": true,
+	"outputFile": "flow-output.js"
+}

@@ -17,8 +17,17 @@ const moduleUtils = require('./util/module');
 const fetchUtils = require('./util/fetcher');
 
 program
-  .version('0.4.4')
-  .usage('[options] <schema.json>')
+  .version('0.5.0')
+  .usage('[options] <schemaPath>')
+  .option(
+    '-c --config [configFile]',
+    'Use specified configuation file. By default, gql2flow looks for a gql2flow.json config file in the current directory.',
+    fileIO.pathJoin(__dirname, 'gql2flow.json')
+  )
+  .option(
+    '-u --unauthorised',
+    'Allow fetch over TLS with unauthorised CA or self-signed certs. (Only use in development environments.)',
+    false)
   .option('-e --export', 'use export rather than declare to define types')
   .option(
     '-o --output-file [outputFile]',
@@ -60,9 +69,10 @@ program
     []
   )
   .action((path, options) => {
+    const config = fileIO.isFile(options.config) ? Object.assign({}, options, fileIO.readFile(options.config)) : options
     const getSchema = new Promise((resolve, reject) => {
       if (isUrl(path)) {
-        fetchUtils.fetchWithIntrospection(path, (err, schema) => {
+        fetchUtils.fetchWithIntrospection(path, config, (err, schema) => {
           if (err) {
             reject(err);
           } else if (!schema.data) {
@@ -80,16 +90,14 @@ program
 
     getSchema
       .then(schema => {
-        let interfaces = interfaceUtils.generateTypes(schema, options);
+        let interfaces = interfaceUtils.generateTypes(schema, config);
+        let module = moduleUtils.generateModule(config.moduleName, interfaces);
 
-        let module = moduleUtils.generateModule(options.moduleName, interfaces);
-
-        moduleUtils.writeModuleToFile(options.outputFile, module);
+        moduleUtils.writeModuleToFile(config.outputFile, module);
       })
       .catch(err => console.error(err.message));
   })
-  .parse(process.argv);
 
-if (!process.argv.slice(2).length) {
-  program.outputHelp();
-}
+program.on(['-h', '--help'], program.outputHelp);
+
+program.parse(process.argv);

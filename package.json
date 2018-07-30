@@ -1,6 +1,6 @@
 {
   "name": "gql2flow",
-  "version": "0.4.5",
+  "version": "0.5.0",
   "description": "Convert a GraphQL Schema to a Flowtype definition",
   "main": "index.js",
   "dependencies": {
@@ -38,7 +38,7 @@
   "engines": {
     "node": ">=4.0.0"
   },
-  "perferGlobal": true,
+  "perferGlobal": false,
   "bugs": {
     "url": "https://github.com/joarwilk/gql2flow/issues"
   },
