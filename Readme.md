@@ -1,4 +1,4 @@
-## This project is deprecated, use [gql2ts](https://github.com/avantcredit/gql2ts) instead
+## This project is unmaintained, if you are a TypeScript user, you may use [gql2ts](https://github.com/avantcredit/gql2ts) instead
 
 # GraphQL To Flow Types
 
